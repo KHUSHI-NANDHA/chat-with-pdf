@@ -23,26 +23,26 @@ First, let's install the necessary libraries.
 
 """Next, let's import all required libraries:"""
 
-# pip install streamlit
+# # pip install streamlit
 
-import os
-import pdfplumber
-import google.generativeai as genai
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
-from langchain_community.vectorstores import Chroma
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.chains import ConversationalRetrievalChain
-from langchain.memory import ConversationBufferMemory
+# import os
+# import pdfplumber
+# import google.generativeai as genai
+# from langchain.text_splitter import RecursiveCharacterTextSplitter
+# from langchain_google_genai import GoogleGenerativeAIEmbeddings
+# from langchain_community.vectorstores import Chroma
+# from langchain_google_genai import ChatGoogleGenerativeAI
+# from langchain.chains import ConversationalRetrievalChain
+# from langchain.memory import ConversationBufferMemory
 
-from google.colab import userdata
-os.environ["GOOGLE_API_KEY"] = userdata.get("GOOGLE_API_KEY")
+# from google.colab import userdata
+# os.environ["GOOGLE_API_KEY"] = userdata.get("GOOGLE_API_KEY")
 
 # %%writefile rag_streamlit.py
 
-import streamlit as st
-import os
-import tempfile
+# import streamlit as st
+# import os
+# import tempfile
 from session_4_rag_backend import (
     setup_api_key,
     upload_pdf,
