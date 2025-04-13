@@ -117,9 +117,10 @@ def process_documents(uploaded_files):
         if all_chunks:
             texts = [chunk["content"] for chunk in all_chunks]
             vectorstore = store_embeddings(
-                st.session_state.embedding_model,
+                 st.session_state.embedding_model,
                 texts,
-                persist_directory="./streamlit_chroma_db"
+                persist_directory="./streamlit_chroma_db",
+                metadatas=metadatas
             )
             if vectorstore:
                 st.session_state.vectorstore = vectorstore
