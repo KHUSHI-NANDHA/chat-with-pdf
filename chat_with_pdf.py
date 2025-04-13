@@ -43,17 +43,17 @@ First, let's install the necessary libraries.
 # import streamlit as st
 # import os
 # import tempfile
-from session_4_rag_backend import (
-    setup_api_key,
-    upload_pdf,
-    parse_pdf,
-    create_document_chunks,
-    init_embedding_model,
-    embed_documents,
-    store_embeddings,
-    get_context_from_chunks,
-    query_with_full_context
-)
+# from session_4_rag_backend import (
+#     setup_api_key,
+#     upload_pdf,
+#     parse_pdf,
+#     create_document_chunks,
+#     init_embedding_model,
+#     embed_documents,
+#     store_embeddings,
+#     get_context_from_chunks,
+#     query_with_full_context
+# )
 
 # Page configuration
 st.set_page_config(
