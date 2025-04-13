@@ -85,7 +85,7 @@ def main():
         if api_key:
             if button("Set API Key"):
                 setup_api_key(api_key)
-                 success("API Key set successfully!")
+                success("API Key set successfully!")
 
          divider()
 
