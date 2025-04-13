@@ -16,9 +16,10 @@ from session_4_rag_backend import (
 # Page configuration
 st.set_page_config(
     page_title="RAG Chatbot with Gemini",
-    page_icon="\ud83d\udcda",
+    page_icon="📚",
     layout="wide"
 )
+
 
 # Session state initialization
 if "conversation" not in st.session_state:
