@@ -56,7 +56,7 @@ First, let's install the necessary libraries.
 # )
 
 # Page configuration
-st.set_page_config(
+set_page_config(
     page_title="RAG Chatbot with Gemini",
     page_icon="📚",
     layout="wide"
@@ -64,62 +64,62 @@ st.set_page_config(
 
 # Session state initialization
 if "conversation" not in st.session_state:
-    st.session_state.conversation = []
-if "vectorstore" not in st.session_state:
-    st.session_state.vectorstore = None
-if "embedding_model" not in st.session_state:
-    st.session_state.embedding_model = None
-if "processed_files" not in st.session_state:
-    st.session_state.processed_files = []
+    session_state.conversation = []
+if "vectorstore" not in session_state:
+    session_state.vectorstore = None
+if "embedding_model" not in session_state:
+    session_state.embedding_model = None
+if "processed_files" not in session_state:
+   session_state.processed_files = []
 
 
 def main():
     # Sidebar for API key and file upload
-    with st.sidebar:
-        st.title("RAG Chatbot")
-        st.subheader("Configuration")
+    with sidebar:
+        title("RAG Chatbot")
+        subheader("Configuration")
 
         # API Key input
-        api_key = st.text_input("Enter Gemini API Key:", type="password")
+        api_key = text_input("Enter Gemini API Key:", type="password")
 
         if api_key:
-            if st.button("Set API Key"):
+            if button("Set API Key"):
                 setup_api_key(api_key)
                 st.success("API Key set successfully!")
 
         st.divider()
 
         # File uploader
-        st.subheader("Upload Documents")
-        uploaded_files = st.file_uploader("Upload PDF files", type="pdf", accept_multiple_files=True)
+        subheader("Upload Documents")
+        uploaded_files = file_uploader("Upload PDF files", type="pdf", accept_multiple_files=True)
 
         if uploaded_files:
-            if st.button("Process Documents"):
+            if button("Process Documents"):
                 process_documents(uploaded_files)
 
         # Display processed files
-        if st.session_state.processed_files:
-            st.subheader("Processed Documents")
-            for file in st.session_state.processed_files:
-                st.write(f"- {file}")
+        if session_state.processed_files:
+            subheader("Processed Documents")
+            for file in session_state.processed_files:
+                write(f"- {file}")
 
-        st.divider()
+        divider()
 
         # Advanced options
-        with st.expander("Advanced Options"):
-            st.slider("Number of chunks to retrieve (k)", min_value=1, max_value=10, value=3, key="k_value")
-            st.slider("Temperature", min_value=0.0, max_value=1.0, value=0.2, step=0.1, key="temperature")
+        with expander("Advanced Options"):
+            slider("Number of chunks to retrieve (k)", min_value=1, max_value=10, value=3, key="k_value")
+           slider("Temperature", min_value=0.0, max_value=1.0, value=0.2, step=0.1, key="temperature")
 
     # Main content area
-    st.title("Retrieval Augmented Generation Chatbot")
+   title("Retrieval Augmented Generation Chatbot")
 
     # Check if vectorstore is ready
-    if st.session_state.vectorstore is None:
-        st.info("Please upload and process documents to start chatting.")
+    if session_state.vectorstore is None:
+        info("Please upload and process documents to start chatting.")
 
         # Example usage instructions
-        with st.expander("How to use this app"):
-            st.markdown("""
+        with expander("How to use this app"):
+            markdown("""
             1. Enter your Gemini API Key in the sidebar
             2. Upload one or more PDF documents
             3. Click "Process Documents" to analyze them
@@ -142,15 +142,15 @@ def process_documents(uploaded_files):
     """Process uploaded PDF documents and create the vector store"""
     try:
         # Initialize progress tracking
-        progress_bar = st.sidebar.progress(0)
-        status_text = st.sidebar.empty()
+        progress_bar = sidebar.progress(0)
+        status_text = sidebar.empty()
 
         # Initialize embedding model if not already done
-        if st.session_state.embedding_model is None:
+        if session_state.embedding_model is None:
             status_text.text("Initializing embedding model...")
-            st.session_state.embedding_model = init_embedding_model()
-            if st.session_state.embedding_model is None:
-                st.sidebar.error("Failed to initialize embedding model. Check your API key.")
+            session_state.embedding_model = init_embedding_model()
+            if session_state.embedding_model is None:
+                sidebar.error("Failed to initialize embedding model. Check your API key.")
                 return
 
         # Process each uploaded file
@@ -171,7 +171,7 @@ def process_documents(uploaded_files):
             # Process the PDF
             pdf_file = upload_pdf(pdf_path)
             if not pdf_file:
-                st.sidebar.warning(f"Failed to process {uploaded_file.name}")
+                sidebar.warning(f"Failed to process {uploaded_file.name}")
                 continue
 
             # Parse PDF to extract text
@@ -183,7 +183,7 @@ def process_documents(uploaded_files):
             # Create document chunks
             chunks = create_document_chunks(text)
             if not chunks:
-                st.sidebar.warning(f"Failed to create chunks from {uploaded_file.name}")
+                sidebar.warning(f"Failed to create chunks from {uploaded_file.name}")
                 continue
 
             # Add metadata to chunks
@@ -210,20 +210,20 @@ def process_documents(uploaded_files):
             metadatas = [{"source": chunk["source"]} for chunk in all_chunks]
 
             vectorstore = store_embeddings(
-                st.session_state.embedding_model,
+                session_state.embedding_model,
                 texts,
                 persist_directory="./streamlit_chroma_db"
             )
 
             if vectorstore:
-                st.session_state.vectorstore = vectorstore
-                st.session_state.processed_files = processed_file_names
+                session_state.vectorstore = vectorstore
+                session_state.processed_files = processed_file_names
                 status_text.text("Processing complete!")
-                st.sidebar.success(f"Successfully processed {len(processed_file_names)} documents")
+                sidebar.success(f"Successfully processed {len(processed_file_names)} documents")
             else:
-                st.sidebar.error("Failed to create vector database")
+                sidebar.error("Failed to create vector database")
         else:
-            st.sidebar.error("No valid chunks extracted from documents")
+            sidebar.error("No valid chunks extracted from documents")
 
         # Clear progress indicators
         progress_bar.empty()
