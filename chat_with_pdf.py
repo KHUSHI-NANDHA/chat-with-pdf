@@ -86,8 +86,8 @@ def main():
             if button("Set API Key"):
                 setup_api_key(api_key)
                 success("API Key set successfully!")
-
-         divider()
+                
+        divider()
 
         # File uploader
         subheader("Upload Documents")
