@@ -18,12 +18,12 @@ First, let's install the necessary libraries.
 """
 
 # Install required packages
-pip install langchain langchain-google-genai langchain_community pypdf chromadb sentence-transformers -q
-pip install google-generativeai pdfplumber -q
+# pip install langchain langchain-google-genai langchain_community pypdf chromadb sentence-transformers -q
+# pip install google-generativeai pdfplumber -q
 
 """Next, let's import all required libraries:"""
 
-pip install streamlit
+# pip install streamlit
 
 import os
 import pdfplumber
@@ -299,23 +299,23 @@ def reset_conversation():
 if __name__ == "__main__":
     main()
 
-!streamlit run rag_streamlit.py --server.port=8989 &>./logs.txt &
+# !streamlit run rag_streamlit.py --server.port=8989 &>./logs.txt &
 
-from pyngrok import ngrok
-from google.colab import userdata
+# from pyngrok import ngrok
+# from google.colab import userdata
 
 # Terminate open tunnels if exist
-ngrok.kill()
+# ngrok.kill()
 
-ngrok.set_auth_token(userdata.get('ngrok'))
+# ngrok.set_auth_token(userdata.get('ngrok'))
 
-# Open an HTTPs tunnel on port XXXX which you get from your `logs.txt` file
-ngrok_tunnel = ngrok.connect(8989)
-print("Streamlit App:", ngrok_tunnel.public_url)
+# # Open an HTTPs tunnel on port XXXX which you get from your `logs.txt` file
+# ngrok_tunnel = ngrok.connect(8989)
+# print("Streamlit App:", ngrok_tunnel.public_url)
 
-from google.colab import drive
-drive.mount('/content/drive')
+# from google.colab import drive
+# drive.mount('/content/drive')
 
-ngrok.kill()
+# ngrok.kill()
 
-ps -ef | grep streamlit
+# ps -ef | grep streamlit
