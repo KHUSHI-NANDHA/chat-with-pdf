@@ -111,7 +111,7 @@ def main():
             slider("Temperature", min_value=0.0, max_value=1.0, value=0.2, step=0.1, key="temperature")
 
     # Main content area
-   title("Retrieval Augmented Generation Chatbot")
+    title("Retrieval Augmented Generation Chatbot")
 
     # Check if vectorstore is ready
     if session_state.vectorstore is None:
