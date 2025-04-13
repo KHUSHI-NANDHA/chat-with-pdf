@@ -63,7 +63,7 @@ set_page_config(
 )
 
 # Session state initialization
-if "conversation" not in st.session_state:
+if "conversation" not in  session_state:
     session_state.conversation = []
 if "vectorstore" not in session_state:
     session_state.vectorstore = None
@@ -85,9 +85,9 @@ def main():
         if api_key:
             if button("Set API Key"):
                 setup_api_key(api_key)
-                st.success("API Key set successfully!")
+                 success("API Key set successfully!")
 
-        st.divider()
+         divider()
 
         # File uploader
         subheader("Upload Documents")
@@ -108,7 +108,7 @@ def main():
         # Advanced options
         with expander("Advanced Options"):
             slider("Number of chunks to retrieve (k)", min_value=1, max_value=10, value=3, key="k_value")
-           slider("Temperature", min_value=0.0, max_value=1.0, value=0.2, step=0.1, key="temperature")
+            slider("Temperature", min_value=0.0, max_value=1.0, value=0.2, step=0.1, key="temperature")
 
     # Main content area
    title("Retrieval Augmented Generation Chatbot")
@@ -133,7 +133,7 @@ def main():
         display_chat()
 
         # User input for queries
-        user_query = st.chat_input("Ask a question about your documents...")
+        user_query =  chat_input("Ask a question about your documents...")
         if user_query:
             handle_user_query(user_query)
 
@@ -177,7 +177,7 @@ def process_documents(uploaded_files):
             # Parse PDF to extract text
             text = parse_pdf(pdf_file)
             if not text:
-                st.sidebar.warning(f"Failed to extract text from {uploaded_file.name}")
+                 sidebar.warning(f"Failed to extract text from {uploaded_file.name}")
                 continue
 
             # Create document chunks
@@ -230,37 +230,37 @@ def process_documents(uploaded_files):
         status_text.empty()
 
     except Exception as e:
-        st.sidebar.error(f"Error processing documents: {str(e)}")
+         sidebar.error(f"Error processing documents: {str(e)}")
 
 
 def handle_user_query(query):
     """Process a user query and display the response"""
-    if st.session_state.vectorstore is None:
-        st.error("Please process documents before asking questions")
+    if  session_state.vectorstore is None:
+         error("Please process documents before asking questions")
         return
 
     # Add user message to conversation
-    st.session_state.conversation.append({"role": "user", "content": query})
+     session_state.conversation.append({"role": "user", "content": query})
 
     # Display "thinking" message
-    thinking_placeholder = st.empty()
+    thinking_placeholder =  empty()
     thinking_placeholder.info("🤔 Thinking...")
 
     try:
         # Retrieve k value from session state
-        k = st.session_state.k_value
-        temperature = st.session_state.temperature
+        k =  session_state.k_value
+        temperature =  session_state.temperature
 
         # Query the RAG system
         response, context, chunks = query_with_full_context(
             query,
-            st.session_state.vectorstore,
+             session_state.vectorstore,
             k=k,
             temperature=temperature
         )
 
         # Add assistant response to conversation
-        st.session_state.conversation.append({"role": "assistant", "content": response, "context": context})
+         session_state.conversation.append({"role": "assistant", "content": response, "context": context})
 
         # Clear thinking message
         thinking_placeholder.empty()
@@ -271,29 +271,29 @@ def handle_user_query(query):
     except Exception as e:
         thinking_placeholder.empty()
         error_msg = f"Error generating response: {str(e)}"
-        st.session_state.conversation.append({"role": "assistant", "content": error_msg})
+         session_state.conversation.append({"role": "assistant", "content": error_msg})
         display_chat()
 
 
 def display_chat():
     """Display the chat conversation"""
-    for message in st.session_state.conversation:
+    for message in  session_state.conversation:
         if message["role"] == "user":
-            with st.chat_message("user"):
-                st.write(message["content"])
+            with  chat_message("user"):
+                 write(message["content"])
         else:
-            with st.chat_message("assistant"):
-                st.write(message["content"])
+            with  chat_message("assistant"):
+                 write(message["content"])
 
                 # Display context info in an expander if available
                 if "context" in message and message["context"]:
-                    with st.expander("View source context"):
-                        st.text(message["context"])
+                    with  expander("View source context"):
+                         text(message["context"])
 
 
 def reset_conversation():
     """Reset the conversation history"""
-    st.session_state.conversation = []
+     session_state.conversation = []
 
 
 if __name__ == "__main__":
